@@ -36,26 +36,27 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():  # sourcery skip: avoid-builtin-shadow
-    if request.method == 'POST':
-        name=request.form.get("name")
-        email=request.form.get("email")
-        phone_no=request.form.get("phone_no")
-        address=request.form.get("address")
-         # get input values from registration form
+    """    
+        if request.method == 'POST':
+            name=request.form.get("name")
+            email=request.form.get("email")
+            phone_no=request.form.get("phone_no")
+            address=request.form.get("address")
+            # get input values from registration form
+            
+            # generate unique random id as Firebase key
+            id=str(uuid.uuid4())
+            
+            # create a new child with the generated key under users node
+            db.child("users").child(id).set({
+                "name": name,
+                "email": email,
+                "phone_no": phone_no,
+                "address": address,
+                })
+            
+    """       
         
-         # generate unique random id as Firebase key
-        id=str(uuid.uuid4())
-         
-         # create a new child with the generated key under users node
-        db.child("users").child(id).set({
-             "name": name,
-             "email": email,
-             "phone_no": phone_no,
-             "address": address,
-              })
-         
-         
-    
     return render_template('registrationform.html')
 
 
