@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request
+import firebase_admin
+from firebase_admin import credentials
 import pyrebase
 import uuid
-#https://urbanworkers-21f47-default-rtdb.firebaseio.com/
+
 app = Flask(__name__)
 
 config = {
   "apiKey": "AIzaSyDLob3jrEFEfaxZyq9keF2gU9j-NQRgZic",
   "authDomain": "urbanworkers-21f47.firebaseapp.com",
-  "databaseURL": "",
+  "databaseURL": "https://urbanworkers-21f47-default-rtdb.firebaseio.com/",
   "projectId": "urbanworkers-21f47",
   "storageBucket": "urbanworkers-21f47.appspot.com",
   "messagingSenderId": "645367486525",
@@ -16,6 +18,8 @@ config = {
 }
 
 firebase = pyrebase.initialize_app(config)
+cred = credentials.Certificate("path/to/serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
 db = firebase.database()
 auth = firebase.auth()
 
@@ -65,14 +69,18 @@ def submit():
     if request.method == 'POST':
         name=request.form.get("name")
         email=request.form.get("email")
-        phone_no=request.form.get("phone_no")
+        phone_no=request.form.get("phone")
         address=request.form.get("address")
+        password=request.form.get("password")
+        dob=request.form.get("dob")
+        adhar=request.form.get("adhar")
          # get input values from registration form
         
          # generate unique random id as Firebase key
         id=str(uuid.uuid4())
          
          # create a new child with the generated key under users node
+        auth.create_user_with_email_and_password(email, password)
         db.child("users").child(id).set({
              "name": name,
              "email": email,
