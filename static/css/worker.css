@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: linear-gradient(to bottom right, #ff0000, #000000);
+  color: #fff;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 36px;
+  margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 20px;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background: linear-gradient(to bottom right, #ff0000, #000000);
+  color: #fff;
+}
+
+.accept-btn, .deny-btn {
+  background: linear-gradient(to bottom right, #ff0000, #000000);
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.accept-btn:hover, .deny-btn:hover {
+  background: linear-gradient(to bottom right, #cc0000, #333333);
+}

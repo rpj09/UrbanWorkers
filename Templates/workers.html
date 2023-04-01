@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Work Proposals</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/worker.css') }}">
+  </head>
+  <body>
+    <header>
+      <h1>Work Proposals</h1>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th>Type of Work</th>
+            <th>Amount to be Paid</th>
+            <th>When to Start</th>
+            <th>Working Hours</th>
+            <th>Hirer's Contact Details</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>{{ row.work_type }}</td>
+            <td>{{ row.amount }}</td>
+            <td>{{ row.start_date }}</td>
+            <td>{{ row.working_hours }}</td>
+            <td>Email: {{ row.email }}<br>Phone: {{ row.phone }}</td>
+            <td>
+              <button class="accept-btn">Accept</button>
+              <button class="deny-btn">Deny</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>

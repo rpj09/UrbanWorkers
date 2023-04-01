@@ -23,7 +23,9 @@ config = {
 #db = firebase.database()
 #auth = firebase.auth()
 cred = credentials.Certificate("/Users/ripunjaysingh/learn/GOOGLE_SOLUTIONS/cred.json")
-firebase=firebase_admin.initialize_app(cred)
+firebase=firebase_admin.initialize_app(cred,{
+    'databaseURL': 'https://urbanworkers-21f47-default-rtdb.firebaseio.com/'
+})
 pb = pyrebase.initialize_app(json.load(open('/Users/ripunjaysingh/learn/GOOGLE_SOLUTIONS/cred.json')))
 
 @app.route('/', methods=['GET', 'POST'])
@@ -48,7 +50,7 @@ def login():
     #return render_template("index.html")
 
 @app.route('/register', methods=['GET', 'POST'])
-def register():  # sourcery skip: avoid-builtin-shadow
+def register():  
     """    
         if request.method == 'POST':
             name=request.form.get("name")
@@ -96,21 +98,28 @@ def submit():
         password=request.form.get("password")
         dob=request.form.get("dob")
         adhar=request.form.get("adhar")
-         # get input values from registration form
         
          # generate unique random id as Firebase key
         id=str(uuid.uuid4())
-         
-        # create a new child with the generated key under users node
-        #auth.create_user_with_email_and_password(email, password)
         user=auth.create_user(
                email=email,
-               password=password,
-               display_name=name,
-               phone_number=phone_no,
-               
+               password=password    
         )
-        print('Sucessfully created new user: {}'.format(user.email))
+
+        db.reference().child('users').push({
+        'name': name,
+        'email': email,
+        'phone_no': phone_no,
+        'address': address,
+        'password': password,
+        'dob': dob,
+        'adhar': adhar
+
+            })
+        ref = db.reference('/users')
+        data = ref.get()
+        print(data)
+
     """        db.child("users").child(id).set({
                 "name": name,
                 "email": email,
@@ -121,6 +130,69 @@ def submit():
          
     
     return render_template('submit.html')
+
+@app.route('/worker_interface', methods=['GET', 'POST'])
+def worker_interface():
+        rows = [
+        {
+            "work_type": "Web Development",
+            "amount": "$1000",
+            "start_date": "April 15, 2023",
+            "working_hours": "9am-5pm",
+            "email": "john@example.com",
+            "phone": "123-456-780"
+        },
+        {
+            "work_type": "Graphic Design",
+            "amount": "$500",
+            "start_date": "May 1, 2023",
+            "working_hours": "10am-2pm",
+            "email": "jane@example.com",
+            "phone": "555-555-5555"
+        }
+    ]
+        return render_template("workers.html", rows=rows)
+
+@app.route('/hire', methods=['GET', 'POST'])
+def index():
+    workers = [
+        {
+            "name": "Worker 1",
+            "location": {
+                "lat": 37.7749,
+                "lng": -122.4194
+            }
+        },
+        {
+            "name": "Worker 2",
+            "location": {
+                "lat": 37.7799,
+                "lng": -122.4294
+            }
+        },
+        {
+            "name": "Worker 3",
+            "location": {
+                "lat": 37.7699,
+                "lng": -122.4194
+            }
+        },
+        {
+            "name": "Worker 4",
+            "location": {
+                "lat": 37.7749,
+                "lng": -122.4094
+            }
+        },
+        {
+            "name": "Worker 5",
+            "location": {
+                "lat": 37.7699,
+                "lng": -122.4294
+            }
+        }
+    ]
+    return render_template('hirer.html', workers=workers)
 
 if __name__ == '__main__':
     app.run(debug=True)

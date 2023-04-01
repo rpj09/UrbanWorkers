@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Find Workers Near You</title>
+	<style>
+		#map {
+			height: 400px;
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Find Workers Near You</h1>
+	</header>
+	<div id="map"></div>
+	<div>
+		<h2>Nearby Workers:</h2>
+		<ul id="workers-list">
+			<li>Worker 1</li>
+			<li>Worker 2</li>
+			<li>Worker 3</li>
+			<li>Worker 4</li>
+			<li>Worker 5</li>
+		</ul>
+		<p>Select workers you want to work with:</p>
+		<input type="checkbox" id="worker1" name="worker1" value="worker1">
+		<label for="worker1">Worker 1</label><br>
+		<input type="checkbox" id="worker2" name="worker2" value="worker2">
+		<label for="worker2">Worker 2</label><br>
+		<input type="checkbox" id="worker3" name="worker3" value="worker3">
+		<label for="worker3">Worker 3</label><br>
+		<input type="checkbox" id="worker4" name="worker4" value="worker4">
+		<label for="worker4">Worker 4</label><br>
+		<input type="checkbox" id="worker5" name="worker5" value="worker5">
+		<label for="worker5">Worker 5</label><br>
+	</div>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAy9v06VrFtqYeV1pB8mnQaVxTbx9eDdcQ&callback=initMap"
+	async defer></script>
+    <script>
+        var workers = [
+            {
+                "name": "Worker 1",
+                "location": {
+                    "lat": 37.7749,
+                    "lng": -122.4194
+                }
+            },
+            {
+                "name": "Worker 2",
+                "location": {
+                    "lat": 37.7799,
+                    "lng": -122.4294
+                }
+            },
+            {
+                "name": "Worker 3",
+                "location": {
+                    "lat": 37.7699,
+                    "lng": -122.4194
+                }
+            },
+            {
+                "name": "Worker 4",
+                "location": {
+                    "lat": 37.7749,
+                    "lng": -122.4094
+                }
+            },
+            {
+                "name": "Worker 5",
+                "location": {
+                    "lat": 37.7699,
+                    "lng": -122.4294
+                }
+            }
+        ];
+    
+        function initMap() {
+    
+            // Create a map centered on user's location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        center: userLocation,
+                        zoom: 15
+                    });
+                    // Add marker for user's location
+                    var userMarker = new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        title: "Your location"
+                    });
+                    // Add markers for workers
+                    workers.forEach(function(worker) {
+                        var marker = new google.maps.Marker({
+                            position: worker.location,
+                            map: map,
+                            title: worker.name
+                        });
+                    }); // Add missing closing curly brace for forEach loop
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+    
+</body>
+</html>
