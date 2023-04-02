@@ -7,20 +7,20 @@ import json
 import uuid
 
 app = Flask(__name__)
-"""
-config = {
+
+firebaseConfig = {
   "apiKey": "AIzaSyDLob3jrEFEfaxZyq9keF2gU9j-NQRgZic",
   "authDomain": "urbanworkers-21f47.firebaseapp.com",
-  "databaseURL": "https://urbanworkers-21f47-default-rtdb.firebaseio.com/",
+  "databaseURL": "https://urbanworkers-21f47-default-rtdb.firebaseio.com",
   "projectId": "urbanworkers-21f47",
   "storageBucket": "urbanworkers-21f47.appspot.com",
   "messagingSenderId": "645367486525",
   "appId": "1:645367486525:web:88905f7fc97042eeea7254",
   "measurementId": "G-XMQ9WP3XPY"
 }
-"""
-#firebase = pyrebase.initialize_app(config)
-#db = firebase.database()
+
+firebass = pyrebase.initialize_app(firebaseConfig)
+sb = firebass.database()
 #auth = firebase.auth()
 cred = credentials.Certificate("/Users/ripunjaysingh/learn/GOOGLE_SOLUTIONS/cred.json")
 firebase=firebase_admin.initialize_app(cred,{
@@ -51,28 +51,34 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():  
-    """    
+    
         if request.method == 'POST':
             name=request.form.get("name")
             email=request.form.get("email")
-            phone_no=request.form.get("phone_no")
+            phone_no=request.form.get("phone")
             address=request.form.get("address")
+            password=request.form.get("password")
+            dob=request.form.get("dob")
+            adhar=request.form.get("adhar")
             # get input values from registration form
             
             # generate unique random id as Firebase key
             id=str(uuid.uuid4())
             
             # create a new child with the generated key under users node
-            db.child("users").child(id).set({
-                "name": name,
-                "email": email,
-                "phone_no": phone_no,
-                "address": address,
-                })
+            sb.child('users').push({
+            'name': name,
+            'email': email,
+            'phone_no': phone_no,
+            'address': address,
+            'password': password,
+            'dob': dob,
+            'adhar': adhar
+            })
             
-    """       
         
-    return render_template('registrationform.html')
+        
+        return render_template('registrationform.html')
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -98,6 +104,8 @@ def submit():
         password=request.form.get("password")
         dob=request.form.get("dob")
         adhar=request.form.get("adhar")
+
+        print(name,email,phone_no,address,password,dob,adhar)
         
          # generate unique random id as Firebase key
         id=str(uuid.uuid4())
@@ -106,7 +114,7 @@ def submit():
                password=password    
         )
 
-        db.reference().child('users').push({
+        sb.child('users').push({
         'name': name,
         'email': email,
         'phone_no': phone_no,
@@ -116,19 +124,19 @@ def submit():
         'adhar': adhar
 
             })
-        ref = db.reference('/users')
-        data = ref.get()
-        print(data)
+        
+    """
+            db.reference().child('users').push({
+            'name': name,
+            'email': email,
+            'phone_no': phone_no,
+            'address': address,
+            'password': password,
+            'dob': dob,
+            'adhar': adhar
 
-    """        db.child("users").child(id).set({
-                "name": name,
-                "email": email,
-                "phone_no": phone_no,
-                "address": address,
-                })
-            """
-         
-    
+                })"""
+
     return render_template('submit.html')
 
 @app.route('/worker_interface', methods=['GET', 'POST'])
