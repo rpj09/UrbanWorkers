@@ -31,54 +31,21 @@ pb = pyrebase.initialize_app(json.load(open('/Users/ripunjaysingh/learn/GOOGLE_S
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
-    """        
-            user_data = db.child("users").child(username).get().val()
-            
-            if user_data and user_data["password"] == password:
-                return "You're logged in!"
-            else:
-                return "Invalid credentials."
-    """   
-    try:
-        user = pb.auth().sign_in_with_email_and_password(email, password)
-        jwt = user['idToken']
-        return render_template("index.html")
-    except:
-        return render_template("index.html")
-    #return render_template("index.html")
+        try:
+            user = sb.auth().sign_in_with_email_and_password(email, password)
+            jwt = user['idToken']
+            return render_template("home.html")
+        except:
+            return render_template("index.html")
+    return render_template("index.html")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():  
-    
-        if request.method == 'POST':
-            name=request.form.get("name")
-            email=request.form.get("email")
-            phone_no=request.form.get("phone")
-            address=request.form.get("address")
-            password=request.form.get("password")
-            dob=request.form.get("dob")
-            adhar=request.form.get("adhar")
-            # get input values from registration form
-            
-            # generate unique random id as Firebase key
-            id=str(uuid.uuid4())
-            
-            # create a new child with the generated key under users node
-            sb.child('users').push({
-            'name': name,
-            'email': email,
-            'phone_no': phone_no,
-            'address': address,
-            'password': password,
-            'dob': dob,
-            'adhar': adhar
-            })
-            
+
         
-        
-        return render_template('registrationform.html')
+    return render_template('registrationform.html')
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
