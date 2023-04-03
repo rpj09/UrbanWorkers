@@ -28,6 +28,8 @@ firebase=firebase_admin.initialize_app(cred,{
 })
 pb = pyrebase.initialize_app(json.load(open('/Users/ripunjaysingh/learn/GOOGLE_SOLUTIONS/cred.json')))
 
+user_id = None
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -36,6 +38,9 @@ def login():
         try:
             user = sb.auth().sign_in_with_email_and_password(email, password)
             jwt = user['idToken']
+            global user_id
+            user_id = user['localId']
+            
             return render_template("home.html")
         except:
             return render_template("index.html")
@@ -44,20 +49,18 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():  
 
-        
     return render_template('registrationform.html')
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-        if request.method == 'POST':
-            email = request.form['email']
-            password = request.form['password']
-        try:
-            user = pb.auth().sign_in_with_email_and_password(email, password)
-            jwt = user['idToken']
-            return render_template("home.html")
-        except:
-            return "Invalid credentials."
+        """        user_type = sb.child("users").child(user_id).child("user_type").get().val()
+                print(user_type)
+                if user_type == 'Get Hired':
+                    return render_template('workers.html')
+                elif user_type == 'Hire':
+                    return render_template('hirer.html')
+        """
+        return render_template("home.html")
 
 
 
@@ -71,8 +74,9 @@ def submit():
         password=request.form.get("password")
         dob=request.form.get("dob")
         adhar=request.form.get("adhar")
+        select_option = request.form['selectOption']
 
-        print(name,email,phone_no,address,password,dob,adhar)
+        #print(name,email,phone_no,address,password,dob,adhar,select_option)
         
          # generate unique random id as Firebase key
         id=str(uuid.uuid4())
@@ -88,7 +92,8 @@ def submit():
         'address': address,
         'password': password,
         'dob': dob,
-        'adhar': adhar
+        'adhar': adhar,
+        'user_type': select_option
 
             })
         

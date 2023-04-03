@@ -10,6 +10,14 @@
     <div class="container">
         <h1>Register</h1>
         <form method="post" action="/submit">
+            <div class="select-options">
+                <input type="radio" class="select-option-input" id="hireOption" name="selectOption" value="hire">
+                <label class="select-option-label hire" for="hireOption">Hire</label>
+                <input type="radio" class="select-option-input" id="getHiredOption" name="selectOption" value="get-hired">
+                <label class="select-option-label get-hired" for="getHiredOption">Get Hired</label>
+              </div>
+              
+              
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" placeholder="Full Name" required>
             
