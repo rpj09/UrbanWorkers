@@ -86,3 +86,42 @@ a:hover {
     text-decoration: underline;
 }
 
+.select-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+  }
+  
+  .select-option-input {
+    display: none;
+  }
+  
+  .select-option-label {
+    padding: 10px;
+    background-color: #ccc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 10px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .select-option-label:hover {
+    background-color: #aaa;
+  }
+  
+  .select-option-input:checked + .select-option-label {
+    background-color: #008000;
+  }
+  
+  .select-option-input:checked + .select-option-label.hire {
+    background-color: #008000;
+  }
+  
+  .select-option-input:checked + .select-option-label.get-hired {
+    background-color: #FF8C00;
+  }
+  
