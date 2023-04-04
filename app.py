@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, session, url_for
 import firebase_admin
 from firebase_admin import db,auth
 from firebase_admin import credentials
@@ -7,6 +7,7 @@ import json
 import uuid
 
 app = Flask(__name__)
+app.secret_key = "kjdsd32423r3r@#@#@(!jbdsfwef)"
 
 firebaseConfig = {
   "apiKey": "AIzaSyDLob3jrEFEfaxZyq9keF2gU9j-NQRgZic",
@@ -32,18 +33,7 @@ user_id = None
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        try:
-            user = sb.auth().sign_in_with_email_and_password(email, password)
-            jwt = user['idToken']
-            global user_id
-            user_id = user['localId']
-            
-            return render_template("home.html")
-        except:
-            return render_template("index.html")
+
     return render_template("index.html")
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -53,14 +43,29 @@ def register():
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-        """        user_type = sb.child("users").child(user_id).child("user_type").get().val()
+        if request.method == 'POST':
+            email = request.form['email']
+            password = request.form['password']
+            username=email.split('@')[0]
+            print(email,password)
+            try:
+                user = firebass.auth().sign_in_with_email_and_password(email, password)
+                session['user'] = user
+                print("success")
+                jwt = user['idToken']
+                global user_id
+                user_id = user['localId']
+                print(user_id)
+                user_type = sb.child("users").child(username).get().val()['user_type']
                 print(user_type)
-                if user_type == 'Get Hired':
+                if user_type.lower() == 'get hired':
                     return render_template('workers.html')
-                elif user_type == 'Hire':
+                elif user_type.lower() == 'hire':
                     return render_template('hirer.html')
-        """
-        return render_template("home.html")
+            except Exception as e:
+                return f"{e}"
+        return render_template("index.html")
+
 
 
 
@@ -75,7 +80,7 @@ def submit():
         dob=request.form.get("dob")
         adhar=request.form.get("adhar")
         select_option = request.form['selectOption']
-
+        username=email.split('@')[0]
         #print(name,email,phone_no,address,password,dob,adhar,select_option)
         
          # generate unique random id as Firebase key
@@ -85,7 +90,7 @@ def submit():
                password=password    
         )
 
-        sb.child('users').push({
+        sb.child('users').child(username).set({
         'name': name,
         'email': email,
         'phone_no': phone_no,
