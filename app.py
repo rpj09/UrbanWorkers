@@ -11,7 +11,7 @@ app.secret_key = "kjdsd32423r3r@#@#@(!jbdsfwef)"
 firebaseConfig = json.load(open('/Users/ripunjaysingh/learn/GOOGLE_SOLUTIONS/cred.json'))
 firebass = pyrebase.initialize_app(firebaseConfig)
 sb = firebass.database()
-#auth = firebase.auth()
+username=None
 cred = credentials.Certificate("/Users/ripunjaysingh/learn/GOOGLE_SOLUTIONS/cred.json")
 firebase=firebase_admin.initialize_app(cred,{
     'databaseURL': 'https://urbanworkers-21f47-default-rtdb.firebaseio.com/'
@@ -35,6 +35,7 @@ def login():
         if request.method == 'POST':
             email = request.form['email']
             password = request.form['password']
+            global username
             username=email.split('@')[0]
             print(email,password)
             try:
@@ -110,46 +111,31 @@ def worker_interface():
     ]
         return render_template("workers.html", rows=rows)
 
+
+@app.route('/hirer_interface', methods=['GET', 'POST'])
+def hirer_interface():
+    if request.method == 'POST':
+        work_type = request.form['work_type']
+        amount = request.form['amount']
+        start_date = request.form['start_date']
+        working_hours = request.form['working_hours']
+        email = request.form['email']
+        phone = request.form['phone']
+        sb.child('users').child(username).child('jobs_posted').child(work_type).set({
+        'work_type': work_type,
+        'amount': amount,
+        'start_date': start_date,
+        'working_hours': working_hours,
+        'email': email,
+        'phone': phone
+        })
+    
+    return render_template('jobs_form.html')
+
 @app.route('/hire', methods=['GET', 'POST'])
 def index():
-    workers = [
-        {
-            "name": "Worker 1",
-            "location": {
-                "lat": 37.7749,
-                "lng": -122.4194
-            }
-        },
-        {
-            "name": "Worker 2",
-            "location": {
-                "lat": 37.7799,
-                "lng": -122.4294
-            }
-        },
-        {
-            "name": "Worker 3",
-            "location": {
-                "lat": 37.7699,
-                "lng": -122.4194
-            }
-        },
-        {
-            "name": "Worker 4",
-            "location": {
-                "lat": 37.7749,
-                "lng": -122.4094
-            }
-        },
-        {
-            "name": "Worker 5",
-            "location": {
-                "lat": 37.7699,
-                "lng": -122.4294
-            }
-        }
-    ]
-    return render_template('hirer.html', workers=workers)
+
+    return render_template('hirer.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
