@@ -32,7 +32,7 @@ pb = pyrebase.initialize_app(json.load(open('/Users/ripunjaysingh/learn/GOOGLE_S
 user_id = None
 
 @app.route('/', methods=['GET', 'POST'])
-def login():
+def home():
 
     return render_template("index.html")
 
@@ -41,8 +41,8 @@ def register():
 
     return render_template('registrationform.html')
 
-@app.route('/home', methods=['GET', 'POST'])
-def home():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
         if request.method == 'POST':
             email = request.form['email']
             password = request.form['password']
@@ -81,9 +81,6 @@ def submit():
         adhar=request.form.get("adhar")
         select_option = request.form['selectOption']
         username=email.split('@')[0]
-        #print(name,email,phone_no,address,password,dob,adhar,select_option)
-        
-         # generate unique random id as Firebase key
         id=str(uuid.uuid4())
         user=auth.create_user(
                email=email,
@@ -101,18 +98,6 @@ def submit():
         'user_type': select_option
 
             })
-        
-    """
-            db.reference().child('users').push({
-            'name': name,
-            'email': email,
-            'phone_no': phone_no,
-            'address': address,
-            'password': password,
-            'dob': dob,
-            'adhar': adhar
-
-                })"""
 
     return render_template('submit.html')
 
