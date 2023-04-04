@@ -8,18 +8,7 @@ import uuid
 
 app = Flask(__name__)
 app.secret_key = "kjdsd32423r3r@#@#@(!jbdsfwef)"
-
-firebaseConfig = {
-  "apiKey": "AIzaSyDLob3jrEFEfaxZyq9keF2gU9j-NQRgZic",
-  "authDomain": "urbanworkers-21f47.firebaseapp.com",
-  "databaseURL": "https://urbanworkers-21f47-default-rtdb.firebaseio.com",
-  "projectId": "urbanworkers-21f47",
-  "storageBucket": "urbanworkers-21f47.appspot.com",
-  "messagingSenderId": "645367486525",
-  "appId": "1:645367486525:web:88905f7fc97042eeea7254",
-  "measurementId": "G-XMQ9WP3XPY"
-}
-
+firebaseConfig = json.load(open('/Users/ripunjaysingh/learn/GOOGLE_SOLUTIONS/cred.json'))
 firebass = pyrebase.initialize_app(firebaseConfig)
 sb = firebass.database()
 #auth = firebase.auth()
@@ -65,8 +54,6 @@ def login():
             except Exception as e:
                 return f"{e}"
         return render_template("index.html")
-
-
 
 
 @app.route('/submit', methods=['GET', 'POST'])
