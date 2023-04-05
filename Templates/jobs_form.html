@@ -3,41 +3,88 @@
   <head>
     <title>Hire Form</title>
     <style>
-      form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 50px;
+      body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        padding: 40px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      input[type="text"],
+      input[type="number"],
+      input[type="date"],
+      input[type="email"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
       }
       input[type="submit"] {
-        margin-top: 20px;
-        padding: 10px 20px;
-        border: none;
         background-color: #4CAF50;
         color: white;
-        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
         cursor: pointer;
+        transition: background-color 0.3s;
       }
       input[type="submit"]:hover {
         background-color: #3e8e41;
       }
+      h1 {
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 40px;
+      }
     </style>
   </head>
   <body>
-    <form method="post" action="/hirer_interface">
-      <label for="work_type">Work Type:</label>
-      <input type="text" id="work_type" name="work_type" required>
-      <label for="amount">Amount:</label>
-      <input type="number" id="amount" name="amount" required>
-      <label for="start_date">Start Date:</label>
-      <input type="date" id="start_date" name="start_date" required>
-      <label for="working_hours">Working Hours:</label>
-      <input type="number" id="working_hours" name="working_hours" required>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-      <label for="phone">Phone:</label>
-      <input type="tel" id="phone" name="phone" required>
-      <input type="submit" value="Submit">
-    </form>
+    <div class="container">
+      <h1>Hire Form</h1>
+      <form method="post" action="/hire">
+        <div class="form-group">
+          <label for="work_type">Work Type</label>
+          <input type="text" id="work_type" name="work_type" required>
+        </div>
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" name="amount" required>
+        </div>
+        <div class="form-group">
+          <label for="start_date">Start Date</label>
+          <input type="date" id="start_date" name="start_date" required>
+        </div>
+        <div class="form-group">
+          <label for="working_hours">Working Hours</label>
+          <input type="number" id="working_hours" name="working_hours" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
   </body>
 </html>

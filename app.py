@@ -48,10 +48,10 @@ def login():
                 print(user_id)
                 user_type = sb.child("users").child(username).get().val()['user_type']
                 print(user_type)
-                if user_type.lower() == 'get hired':
-                    return render_template('workers.html')
+                if user_type.lower() == 'get-hired':
+                    return redirect(url_for('worker_interface'))
                 elif user_type.lower() == 'hire':
-                    return render_template('hirer.html')
+                    return redirect(url_for('index'))
             except Exception as e:
                 return f"{e}"
         return render_template("index.html")
